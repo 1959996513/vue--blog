@@ -20,12 +20,12 @@
 
       },
       //钩子函数,当组件加载完成之后自动执行
-      method:function () {
+      mounted:function () {
         request({
           url:"/index",
           method:'get'
         }).then((res)=>{
-          console.log(res.data)
+          console.log(res)
         })
       }
     }
