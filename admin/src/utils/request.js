@@ -38,6 +38,7 @@ service.interceptors.response.use(
     return response.data
   },
   error => {
+    //服务端所有错误,都会被前端接收到这个位置,这个位置会打印所有错误,方便进行测试..
     console.log('err' + error) // for debug
     return Promise.reject(error)
   }

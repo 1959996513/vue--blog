@@ -10,7 +10,7 @@
       <main>
         <div class="article-list">
           <section class="btn-container">
-            <button id="add" class="not-del" @click="postArticle">新文章</button>
+            <button id="add" class="not-del" @click="AddArticle">新文章</button>
           </section>
           <!--文章列表组件-->
           <article-list ref="articleList"></article-list>
@@ -29,6 +29,7 @@
   import Editor from '@/components/common/Editor'
   import Aside from '@/components/common/Aside'
   import HeadNav from '@/components/common/HeadNav'
+  import  request from "@/utils/request"
     export default {
         name: "List",
       data(){
@@ -44,14 +45,28 @@
       },
       methods:{
           //发表文章的方法
-        postArticle(){
+        AddArticle(){
+           request({
+             url:"/articles/add",
+             method:'post',
+             data:{}
+           }).then(res=>{
+             // console.log(res);
+           //  获取插入文章的id值
+             const addId = res.insertId;
+            // 调用子组件updateArticle方法1更新
+             this.$refs.articleList.updateList(addId)
+           }).catch(err=>{
 
+             console.log(err)
+           })
           }
       }
     }
 </script>
 
-<style type='text/scss' scoped>
+<style type='text/scss' lang="scss" scoped>
+  @import "../assets/style/variable";
   main {
   @include flex($justify: space-between);
     height: calc(100% - 48px);
