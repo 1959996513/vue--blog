@@ -1,14 +1,15 @@
 <template>
 <div class="editor">
-  <input type="text" class="title" id="title">
+  <input type="text" class="title" id="title" v-model='title'>
+  {{title}}
   <div class="operate-bar">
     <section class="tag-container">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-tag"></use>
       </svg>
       <ul class="tags">
-        <li class="tag">
-          标签
+        <li class="tag" v-for='tag,index in getTags' :key='index'>
+          {{tag}}
           <sup>x</sup>
         </li>
       </ul>
@@ -30,20 +31,36 @@
 <script>
   import 'simplemde/dist/simplemde.min.css'
   import SimpleMDE from 'simplemde'
-
+  import {mapState,mapGetters} from 'vuex'
   export default {
     name: "Editor",
     data(){
      return{
-       simplemde:""
+       simplemde:"",//编辑器
+         tags:""
      }
     },
+    computed:{
+     ...mapState(['id','title','content','isPublished']),
+      ...mapGetters(['getTags'])
+  },
     mounted(){
+     this.tags=this.$store.getters.getTags
       this.simplemde = new SimpleMDE({
        placeholder:"Talk to me,what are you say.........",
         spellChecker:false,
-        toolbarTips:false
-      })
+        toolbarTips:false,
+
+      });
+      //将vuex里面正在编辑信息放到编辑器里
+      console.log(this.content);
+      this.simplemde.value(this.content)
+    },
+    //监控ID值发生变化,一旦发生变化就将内容变化
+    watch:{
+      id(val){
+        this.simplemde.value(this.content);
+      }
     }
   }
 </script>

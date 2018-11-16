@@ -14,14 +14,19 @@ export default async ( ctx, next ) => {
 
     try {
         tokenContent = await jwt.verify(XToken, secret);//如果token过期或验证失败，将抛出错误
-        console.log(11111)
-       next();
+
+      await next();
     }catch(err){
         // ctx.throw(401, 'invalid token');
-        ctx.body={
-            code:40001,
-            message:'token已经过期,请重新登录'
+        if(err.message == 'jwt expired'){
+            ctx.body={
+                code:40001,
+                message:'token已经过期,请重新登录'
+            }
+        }else {
+            ctx.throw(500)
         }
+
     }
 
 }

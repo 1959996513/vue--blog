@@ -1,11 +1,12 @@
 <template>
     <div>
       <ul class="list">
-        <li class="article" :class="{active:activeIndex === index, published:isPublished ===1}" v-for="{title,createTime,isPublished,isChosen},index in articleList">
+        <li class="article" :class="{active:activeIndex === index, published:isPublished ===1}" v-for="{title,createTime,isPublished,isChosen},index in articleList" @click='select(index)'>
           <header>{{title}}</header>
           <p>{{createTime}}</p>
         </li>
       </ul>
+      {{id}}
     </div>
 </template>
 
@@ -24,7 +25,7 @@
       //引入vuex里面的全局方法  吧vue
       computed:{
         ...mapState(['id','title','tags','content','isPublished']),
-          ...mapMutations(['SET_CURRENT_ARTICLE'])
+
 
       },
       //当组件创建成功时自动执行请求
@@ -38,11 +39,18 @@
               article.isChosen=true
             }
             this.articleList.push(...res.data)
+            //  如果查询出文章将第一篇作为正在编辑的文章
+            if(this.articleList!=0){
+              this.SET_CURRENT_ARTICLE(this.articleList[0]);
+              this.activeIndex=0;
+            }
+
           }).catch(err=>{
             console.log(err)
           })
       },
       methods:{
+
           updateList(updateId){
             request({
               method:'get',
@@ -53,11 +61,19 @@
               article.createTime = moment(article.createTime).format('YYYY年 MM月 DD日 HH:mm:ss')
               article.isChosen = true
               this.articleList.unshift(article)
-
+            //  如果发表了新文章的话,当前选中的文章需要下标需要+1
+              this.activeIndex++
+             //将
             }).catch(err=>{
               console.log(err)
             })
-          }
+          },
+        select(index){
+            this.activeIndex=index
+          // 将当前选中的文章扔到全局管理中
+          this.SET_CURRENT_ARTICLE(this.articleList[index])
+        },
+        ...mapMutations(['SET_CURRENT_ARTICLE'])
       }
     }
 </script>

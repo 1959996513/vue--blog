@@ -13,4 +13,8 @@ router.post('/login',UserController.login)
 router.get('/logout',checkToken,UserController.logout)
 //获取所有文章
 router.get('/articles',checkToken,ArticleController.getArticles)
+//添加新文章
+router.post('/articles/add',checkToken,ArticleController.addArticles)
+//查找新文章的详细信息
+router.get('/articles/:id',checkToken,ArticleController.getOneArticles)
 export  default router
