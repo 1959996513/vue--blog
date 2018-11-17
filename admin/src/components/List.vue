@@ -3,14 +3,23 @@
     <head-nav></head-nav>
     <Aside></Aside>
     <div class="list-container main">
-      <h2>文章列表 /
+
+      <h2>
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-wenzhang"></use>
+        </svg>
+        文章列表 /
         <span>ARTICLE LIST</span>
       </h2>
       <hr>
       <main>
         <div class="article-list">
           <section class="btn-container">
-            <button id="add" class="not-del" @click="AddArticle">新文章</button>
+            <button id="add" class="not-del" @click="AddArticle">
+              <svg class="icon" aria-hidden="true">
+                <use xlink:href="#icon-xinzeng"></use>
+              </svg>
+              新文章</button>
           </section>
           <!--文章列表组件-->
           <article-list ref="articleList"></article-list>

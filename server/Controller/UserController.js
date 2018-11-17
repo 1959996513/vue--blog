@@ -19,11 +19,11 @@ class UserController {
         let user = ctx.request.body.user
         let password = ctx.request.body.password
         //验证用户名/密码是否合法
-
+        console.log(md5(password))
     //    检查用户名是否存在
      const res = (await User.getUserByName(user))[0]
       if(res){
-         console.log(res);
+         console.log(res.password);
          if(res.password === md5(password)){
            let token = createToken(res.user)
              ctx.body = {

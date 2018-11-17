@@ -1,15 +1,24 @@
 <template>
   <div class="login-container">
-    <header class="login-head">
-      <span>无火的余灰</span>
-      <img class="logo" src="../assets/img/logo.png" alt="营火">
-    </header>
+
     <section class="form">
-            <span class="slogan">登登登登...录!
-                <span>/ Login</span>
+            <span class="slogan" style="color: #df5000;">博客后台登录页面
+                <span>/ 版权:刘虎木</span>
             </span>
-      <input v-validate="'required'" type="text" id="user" name="user" placeholder="Username" v-model="LoginFrom.user">
-      <input v-validate="'required'"  type="password" id="password" name='password' placeholder="Password" v-model="LoginFrom.password" @keyup.enter="login">
+      <div class="shuru">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-renxiangmoshi"></use>
+        </svg>
+        <input v-validate="'required'" type="text" id="user" name="user" placeholder="Username" v-model="LoginFrom.user">
+      </div>
+
+      <div class="shuru">
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-mima1"></use>
+        </svg>
+        <input v-validate="'required'"  type="password" id="password" name='password' placeholder="Password" v-model="LoginFrom.password" @keyup.enter="login">
+      </div>
+
       <button id="login" @click="login">登录</button>
     </section>
     <footer>Always.</footer>
@@ -30,73 +39,70 @@
       },
       password:{
         required:()=>"密码不能为空"
-  }
+      }
     }
   };
   import request from '@/utils/request'
-
-    export default {
-        name: "Login",
-      data(){
-          return{
-              LoginFrom:{
-                user:'',
-                password:''
-              }
-          }
-      },
-      methods:{
-        login:function () {
-          //首先拿到验证成功失败的结果,如果成功了,在进行登陆,如果失败了,则进行消息提示...
-          if(this.errors.items.length === 0){
-             request({
-               url:"/login",
-               method:'post',
-               data:this.LoginFrom
-             }).then(res=>{
-               //如果用户忙密码不正确要给出提示
-              // console.log(res)
-               if(res.sucess){
-                  let token = res.token;
-                  setToken(token)
-                 this.$store.commit('SET_TOKEN',token);
-                  this.$router.push('/list')
-               }else{
-                 this.$notify({
-                   type:'error',
-                   grop:'admin',
-                   title:'登录失败',
-                   text:res.message
-                 })
-                 this.LoginFrom={}
-               }
-               //将token存到cookie中去
-
-               //跳转到博客首页
-
-             }).catch(err=>{
-               console.log(err)
-             })
-          }else{
+  export default {
+    name: "Login",
+    data(){
+      return{
+        LoginFrom:{
+          user:'',
+          password:''
+        }
+      }
+    },
+    methods:{
+      login:function () {
+        //首先拿到验证成功失败的结果,如果成功了,在进行登陆,如果失败了,则进行消息提示...
+        if(this.errors.items.length === 0){
+          request({
+            url:"/login",
+            method:'post',
+            data:this.LoginFrom
+          }).then(res=>{
+            //如果用户忙密码不正确要给出提示
+            // console.log(res)
+            if(res.sucess){
+              let token = res.token;
+              setToken(token)
+              this.$store.commit('SET_TOKEN',token);
+              this.$router.push('/list')
+            }else{
+              this.$notify({
+                type:'error',
+                grop:'admin',
+                title:'登录失败',
+                text:res.message
+              })
+              this.LoginFrom={}
+            }
+            //将token存到cookie中去
+            //跳转到博客首页
+          }).catch(err=>{
+            console.log(err)
+          })
+        }else{
           this.$notify({
             type:'warn',
             grop:'user',
             title:'验证失败',
             text:this.errors.items[0].msg
           })
-          }
         }
-      },
-      // //钩子函数,当组件加载完成之后自动执行
-      // mounted:function () {
-      //   request({
-      //     url:"/index",
-      //     method:'get'
-      //   }).then((res)=>{
-      //     console.log(res)
-      //   })
-      // }
-    }
+      }
+    },
+    // //钩子函数,当组件加载完成之后自动执行
+    // mounted:function () {
+    //   request({
+    //     url:"/index",
+    //     method:'get'
+    //   }).then((res)=>{
+    //     console.log(res)
+    //   })
+    // }
+  }
 </script>
 
 <style lang="scss" type="text/scss" scoped>
@@ -104,6 +110,9 @@
   @import  "../assets/style/variable";
   .login-container {
     height: 100%;
+    background-image: url("../../static/img/zhu.jpg");
+    background-repeat: no-repeat;
+    background-size: cover;
     @include flex($flow: column wrap);
     font-family: "KaiShu", "Dosis", "Source Sans Pro", "Helvetica Neue", Arial, sans-serif;
     .login-head {
@@ -112,12 +121,19 @@
       height: 3em;
       font-size: 2rem;
     }
-
     .form {
+      .shuru{
+        display: flex;
+        justify-content: center;
+        align-content: center;
+      }
+      .icon{
+        width: 3em;
+        height: 2.5em;
+      }
       @include flex($flow: column wrap);
       width: 400px;
       height: 250px;
-      border-top: 20px solid $base;
       border-radius: 5px;
       // box-shadow: 4px 4px 5px -3px rgba(0, 0, 0, .3);
       box-shadow: 0 3px 10px rgba(0, 0, 0, 0.6);
@@ -155,7 +171,6 @@
         cursor: pointer;
       }
     }
-
     footer {
       height: 4em;
       @include flex;

@@ -6,14 +6,19 @@
     <div class="content-container">
       <section>
         <h4 class="title">
-          无火的余灰
+          刘虎木博客后台
         </h4>
       </section>
       <a class="log-out" @click='logout'>
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-tuichu"></use>
         </svg>
-        <span>&nbsp;登出</span>
+        <span>&nbsp;
+        <svg class="icon" aria-hidden="true">
+          <use xlink:href="#icon-exit"></use>
+        </svg>
+          <span>登出</span>
+        </span>
       </a>
     </div>
   </nav>
