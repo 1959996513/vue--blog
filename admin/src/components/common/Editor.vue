@@ -18,12 +18,12 @@
       <span class="tag-add" v-else @click='addTags'>+</span>
     </section>
     <section class="btn-container">
-      <button id="delete" class="delete">
+      <button id="delete" class="delete" @click="deleteArticle">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-shanchu"></use>
         </svg>
         删除文章</button>
-      <button id="submit" class="not-del">
+      <button id="submit" class="not-del" @click="pushArticle">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-paperplane"></use>
         </svg>发布文章</button>
@@ -38,6 +38,7 @@
 
 <script>
   import 'simplemde/dist/simplemde.min.css'
+  import request from '@/utils/request'
   import SimpleMDE from 'simplemde'
   import debounce from "lodash.debounce"
   import {mapState,mapGetters} from 'vuex'
@@ -110,16 +111,42 @@
       addTags:function () {
           if(this.showTags) {
             const newTags = document.querySelector('#tag-input').value
-            // if(newTags && this.tags.indexOf(newTags) !== -1){
-            //   this.tags.push(newTags)
-            //
-            // }
-            this.getTags.push(newTags);
-            this.autosave();
+            if(newTags && this.tags.indexOf(newTags) === -1){
+              this.getTags.push(newTags);
+              this.autosave();
+
+            }
+
           }
           this.showTags=!this.showTags
-      }
+      },
+      //删除文章
+      deleteArticle:function () {
+        request({
+          url:`/articles/${this.id}`,
+          method:'delete',
+          data:{}
+        }).then(res=>{
+          this.$store.commit('SET_DELETE_ARTICLE')
+        }).catch(err=>{
+          console.log(err);
+        })
+      },
+      //添加文章
+      pushArticle:function () {
+         if(!this.isPublished){
+           request({
+             url:`/articles/publish/${this.id}`,
+             method:'put',
+             data:{}
+           }).then(res=>{
+             this.$store.commit('SET_PUBLISH_ARTICLE')
+           }).catch(err=>{
+             console.log(err);
 
+           })
+         }
+      }
 
     }
   }

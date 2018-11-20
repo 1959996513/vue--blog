@@ -24,7 +24,7 @@
       },
       //引入vuex里面的全局方法  吧vue
       computed:{
-        ...mapState(['id','title','tags','content','isPublished']),
+        ...mapState(['id','title','tags','content','isPublished','toggleDelete']),
 
 
       },
@@ -76,29 +76,47 @@
         ...mapMutations(['SET_CURRENT_ARTICLE'])
       },
       //监听vuex里面的数据变化
-      watch:{
-      title(val){
-        if(this.articleList.length !=0){
-          this.articleList[this.activeIndex].title = val
-        }
-      },
-        tags(val){
-          if(this.articleList.length !=0){
+      watch: {
+        title(val) {
+          if (this.articleList.length != 0) {
+            this.articleList[this.activeIndex].title = val
+          }
+        },
+        tags(val) {
+          if (this.articleList.length != 0) {
             this.articleList[this.activeIndex].tags = val
           }
         },
-        content(val){
-          if(this.articleList.length !=0){
+        content(val) {
+          if (this.articleList.length != 0) {
             this.articleList[this.activeIndex].content = val
           }
         },
-        isPlublished(val){
-          if(this.articleList.length !=0){
-            this.articleList[this.activeIndex].isPlublished = val
+        isPublished(val) {
+          if (this.articleList.length != 0) {
+            this.articleList[this.activeIndex].isPublished = val
+          }
+        },
+        toggleDelete(val) {
+          //如果这个值发生变化,从false变成true说明文章需要删除
+          this.articleList.splice(this.activeIndex, 1);
+          if (this.activeIndex === this.articleList.length) {
+            this.activeIndex--
+          }
+          if (this.articleList.length !== 0) {
+            this.SET_CURRENT_ARTICLE(this.articleList[this.activeIndex])
+          } else {
+            this.SET_CURRENT_ARTICLE({
+              id: '',
+              title: '',
+              tags: '',
+              content: '',
+              isPublished: ''
+            })
           }
         }
       }
-    }
+  }
 </script>
 
 <style  lang="scss" type='text/scss' scoped>

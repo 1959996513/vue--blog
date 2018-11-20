@@ -14,5 +14,11 @@ class ArticleModel {
    async updateArticle(id,{title,tags,content,isPublish}){
         return await query(escape`UPDATE ARTICLE SET title=${title},tags=${tags},content=${content} WHERE id = ${id}`)
    }
+   async deleteArticle(id){
+        return await query(escape`DELETE FROM ARTICLE WHERE id=${id}`)
+   }
+   async publishArticle(id){
+        return await  query(escape`UPDATE ARTICLE SET publishTime = NOW(),isPublished = 1 WHERE id=${id}`)
+   }
 }
 export default  new ArticleModel()

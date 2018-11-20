@@ -17,5 +17,10 @@ router.get('/articles',checkToken,ArticleController.getArticles)
 router.post('/articles/add',checkToken,ArticleController.addArticles)
 //查找新文章的详细信息
 router.get('/articles/:id',checkToken,ArticleController.getOneArticles)
-router.post('/articles/updates/:id',ArticleController.updateArticle)
+//更新
+router.post('/articles/updates/:id',checkToken,ArticleController.updateArticle)
+//删除文章
+router.delete('/articles/:id',checkToken,ArticleController.deleteArticle)
+router.put('/articles/publish/:id',checkToken,ArticleController.publishArticle)
+
 export  default router

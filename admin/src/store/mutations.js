@@ -26,7 +26,7 @@ SET_TOKEN:(state,token)=>{
     state.isPublished = isPublished
   },
   //设置当前文章是否删除
-  SET_DELECT_ARTICLE:(state)=>{
+  SET_DELETE_ARTICLE:(state)=>{
   state.toggleDelete = !state.toggleDelete
   },
   //设置当前文章发布状态
