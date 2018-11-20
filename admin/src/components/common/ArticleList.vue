@@ -74,6 +74,29 @@
           this.SET_CURRENT_ARTICLE(this.articleList[index])
         },
         ...mapMutations(['SET_CURRENT_ARTICLE'])
+      },
+      //监听vuex里面的数据变化
+      watch:{
+      title(val){
+        if(this.articleList.length !=0){
+          this.articleList[this.activeIndex].title = val
+        }
+      },
+        tags(val){
+          if(this.articleList.length !=0){
+            this.articleList[this.activeIndex].tags = val
+          }
+        },
+        content(val){
+          if(this.articleList.length !=0){
+            this.articleList[this.activeIndex].content = val
+          }
+        },
+        isPlublished(val){
+          if(this.articleList.length !=0){
+            this.articleList[this.activeIndex].isPlublished = val
+          }
+        }
       }
     }
 </script>

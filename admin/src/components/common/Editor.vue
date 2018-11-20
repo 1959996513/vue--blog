@@ -1,5 +1,6 @@
 <template>
 <div class="editor">
+{{tags}}
   <input type="text" class="title" id="title" v-model='title' @input='autosave'>
 
   <div class="operate-bar">
@@ -8,13 +9,13 @@
         <use xlink:href="#icon-tag"></use>
       </svg>
       <ul class="tags">
-        <li class="tag" v-for='tag,index in getTags' :key='index'>
+        <li class="tag" v-for='(tag,index) in getTags' :key='index'>
           {{tag}}
-          <sup>x</sup>
+          <sup @click='delectTag(index)'>x</sup>
         </li>
       </ul>
-      <input type="text" class="tag-input" id="tag-input"  @input='autosave'>
-      <span class="tag-add">+</span>
+      <input type="text" v-if="showTags" class="tag-input" id="tag-input" @keydown.enter='addTags'>
+      <span class="tag-add" v-else @click='addTags'>+</span>
     </section>
     <section class="btn-container">
       <button id="delete" class="delete">
@@ -38,18 +39,31 @@
 <script>
   import 'simplemde/dist/simplemde.min.css'
   import SimpleMDE from 'simplemde'
+  import debounce from "lodash.debounce"
   import {mapState,mapGetters} from 'vuex'
   export default {
     name: "Editor",
     data(){
      return{
-       simplemde:"",//编辑器
-         tags:""
+       simplemde:"", //编辑
+       tags:'',
+       showTags:false
      }
     },
     computed:{
      ...mapState(['id','title','content','isPublished']),
-      ...mapGetters(['getTags'])
+      ...mapGetters(['getTags']),
+      //title是双向绑定的,英雌,它可能会改变,如果我们直接从mapState中读取他
+      //那么如果改变title的话,又因为没有setter的方法,导致无法改变state里面title的值
+      title:{
+       get(){
+         return this.$store.state.title
+       },
+        set(value){
+          this.$store.commit('SET_TITLE',value)
+        }
+      }
+
   },
     mounted(){
      this.tags=this.$store.getters.getTags
@@ -73,13 +87,40 @@
       }
     },
     methods:{
-      autosave(){
+
         //自动保存
-        request({
-          url:'',
-          methods:'post'
-        })
+      autosave:debounce(function () {
+         if(this.id){
+          this.$store.dispatch('saveArticle',{
+            id:this.id,
+            title:this.title,
+            tags:this.getTags.join(','),
+            content:this.simplemde.value(),
+            isPublished:this.isPublished
+          })
+         }
+       },1000),
+      //删除标签
+      delectTag:function (index) {
+
+        this.getTags.splice(index,1);
+        this.autosave();
+      },
+      //添加标签
+      addTags:function () {
+          if(this.showTags) {
+            const newTags = document.querySelector('#tag-input').value
+            // if(newTags && this.tags.indexOf(newTags) !== -1){
+            //   this.tags.push(newTags)
+            //
+            // }
+            this.getTags.push(newTags);
+            this.autosave();
+          }
+          this.showTags=!this.showTags
       }
+
+
     }
   }
 </script>
