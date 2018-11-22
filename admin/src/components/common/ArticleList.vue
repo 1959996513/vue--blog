@@ -25,8 +25,6 @@
       //引入vuex里面的全局方法  吧vue
       computed:{
         ...mapState(['id','title','tags','content','isPublished','toggleDelete']),
-
-
       },
       //当组件创建成功时自动执行请求
       created(){

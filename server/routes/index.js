@@ -2,6 +2,8 @@ import Router from 'koa-router'
 import {base_API} from "../config";
 import UserController from  '../Controller/UserController'
 import ArticleController from  '../Controller/ArticleController'
+import BookController  from  '../Controller/BookController'
+import BriefController from '../Controller/BriefController'
 import checkToken from  '../utils/checkToken'
 const router = new Router();
 router.get('/',async ctx=>{
@@ -22,5 +24,14 @@ router.post('/articles/updates/:id',checkToken,ArticleController.updateArticle)
 //删除文章
 router.delete('/articles/:id',checkToken,ArticleController.deleteArticle)
 router.put('/articles/publish/:id',checkToken,ArticleController.publishArticle)
+router.get('/book',checkToken,BookController.getBook)
+router.post('/book/up/:id',checkToken,BookController.upBook)
+router.delete('/book/delete/:id',checkToken,BookController.delBook)
+router.post('/book/add',checkToken,BookController.addBook)
+
+
+//关于我获取
+router.get('/briefs',checkToken,BriefController.getBrief)
+router.put('/briefs/:id',checkToken,BriefController.updateBrief)
 
 export  default router

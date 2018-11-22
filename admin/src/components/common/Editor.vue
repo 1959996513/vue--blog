@@ -1,6 +1,5 @@
 <template>
 <div class="editor">
-{{tags}}
   <input type="text" class="title" id="title" v-model='title' @input='autosave'>
 
   <div class="operate-bar">

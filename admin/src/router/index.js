@@ -7,6 +7,12 @@ Vue.use(Router)
 import Login from '@/components/Login'
 //引入主页
 import List from '@/components/List'
+//引入标签页面
+import Tag from '@/components/Tag'
+//引入阅读
+import ReadingList from '@/components/ReadingList'
+//引入关于我
+import About from '@/components/About'
 export default new Router({
   routes: [
     {
@@ -18,7 +24,20 @@ export default new Router({
       component:List
     },
     {
-      path:'*',redirect:'/login'
+      path:'/tags',
+      component:Tag
+    },
+    {
+      path:'/about',
+      component:About
+    },
+    {
+      path:'/reading',
+      component:ReadingList
+    },
+    {
+      path:'*',
+      redirect:'/login'
     }
   ]
 })
