@@ -48,7 +48,29 @@
           })
       },
       methods:{
+        showArticlesList(chooseTags){
+          request({
+            url:'/findbook',
+            method:'post',
+            data:chooseTags
+          }).then(res=>{
 
+            for(let article of res){
+              article.createTime = moment(article.createTime).format('YYYY年-MM月--DD日   HH:mm:ss');
+              article.isChosen=true
+              // console.log(article);
+            }
+             this.articleList=[];
+            this.articleList.push(...res)
+            //  如果查询出文章将第一篇作为正在编辑的文章
+            if(this.articleList!=0){
+              this.SET_CURRENT_ARTICLE(this.articleList[0]);
+              this.activeIndex=0;
+            }
+          }).catch(err=>{
+            console.log(err);
+          })
+        },
           updateList(updateId){
             request({
               method:'get',

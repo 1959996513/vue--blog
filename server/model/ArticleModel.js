@@ -20,6 +20,9 @@ class ArticleModel {
    async publishArticle(id){
         return await  query(escape`UPDATE ARTICLE SET publishTime = NOW(),isPublished = 1 WHERE id=${id}`)
    }
+   async findTags(){
+       return await query('SELECT * FROM ARTICLE ORDER BY createTime DESC')
+   }
 
 }
 export default  new ArticleModel()

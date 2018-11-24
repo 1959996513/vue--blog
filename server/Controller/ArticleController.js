@@ -33,5 +33,28 @@ class ArticleController {
         const  res = await  Article.publishArticle(id)
         ctx.body = res
     }
+    async findTags(ctx){
+        const  res = await  Article.findTags()
+        ctx.body = res
+    }
+    async findBook(ctx){
+        let data = ctx.request.body
+        // console.log(data);
+        const  res =await Article.findTags();
+        let a = []
+        if(data.length==0){
+           ctx.body=res
+        }else{
+        for(let article of res){
+            for(let b of data){
+                if(article.tags.split(',').indexOf(b)!= -1){
+                    a.push(article);
+                    break;
+                }
+            }
+        }
+        ctx.body=a;
+    }
+    }
 }
 export default new ArticleController()

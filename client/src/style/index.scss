@@ -1,0 +1,13 @@
+body{
+  /deep/ .el-tabs--border-card>.el-tabs__header{
+    background-color:black;
+  }
+  /deep/ .el-tabs--border-card>.el-tabs__header .el-tabs__item.is-active {
+    color: #409EFF;
+     background-color: rgba(96,96,96,.5);
+     border-right-color: #dcdfe6;
+    border-left-color: #dcdfe6;
+  }
+}
+
+

@@ -4,6 +4,7 @@ import UserController from  '../Controller/UserController'
 import ArticleController from  '../Controller/ArticleController'
 import BookController  from  '../Controller/BookController'
 import BriefController from '../Controller/BriefController'
+import qiandaun from '../Controller/qiandaun'
 import checkToken from  '../utils/checkToken'
 const router = new Router();
 router.get('/',async ctx=>{
@@ -28,10 +29,22 @@ router.get('/book',checkToken,BookController.getBook)
 router.post('/book/up/:id',checkToken,BookController.upBook)
 router.delete('/book/delete/:id',checkToken,BookController.delBook)
 router.post('/book/add',checkToken,BookController.addBook)
-
+//查找标签
+router.get('/tags',checkToken,ArticleController.findTags)
+router.post('/findbook',checkToken,ArticleController.findBook)
 
 //关于我获取
 router.get('/briefs',checkToken,BriefController.getBrief)
 router.put('/briefs/:id',checkToken,BriefController.updateBrief)
 
+
+
+
+//前台路由
+//文章那个页面
+router.get("/article",qiandaun.getArticle)
+router.get("/articless/:id",qiandaun.getthisArticle)
+router.get("/gui",qiandaun.guiDang)
+router.get("/tagss",qiandaun.biaoqian)
+router.get("/readings",qiandaun.bookss)
 export  default router

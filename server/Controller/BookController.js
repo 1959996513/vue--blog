@@ -29,5 +29,6 @@ class BookController {
         const res = await Book.addBook(name,author,score)
           ctx.body=res
     }
+
 }
 export default new BookController()

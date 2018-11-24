@@ -2,7 +2,7 @@
 <div class="editor">
   <input type="text" class="title" id="title" v-model='title' @input='autosave'>
 
-  <div class="operate-bar">
+  <div class="operate-bar"  v-show="$route.path=='/list'">
     <section class="tag-container">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-tag"></use>
@@ -13,10 +13,15 @@
           <sup @click='delectTag(index)'>x</sup>
         </li>
       </ul>
-      <input type="text" v-if="showTags" class="tag-input" id="tag-input" @keydown.enter='addTags'>
+   <span>
+           <input type="text" v-if="showTags" class="tag-input" id="tag-input" @keydown.enter='addTags'>
       <span class="tag-add" v-else @click='addTags'>+</span>
+   </span>
+
     </section>
+
     <section class="btn-container">
+
       <button id="delete" class="delete" @click="deleteArticle">
         <svg class="icon" aria-hidden="true">
           <use xlink:href="#icon-shanchu"></use>
@@ -27,6 +32,7 @@
           <use xlink:href="#icon-paperplane"></use>
         </svg>发布文章</button>
     </section>
+
   </div>
   <p class="tips">标签查询页面只能批量更改标签，修改的文章内容会自动保存</p>
   <div class="content">
